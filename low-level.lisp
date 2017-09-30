@@ -14,7 +14,8 @@
 
 (define-foreign-library libmecab
   (:unix "libmecab.so")
-  (:windows #P"C:/Program Files (x86)/MeCab/bin/libmecab.dll"))
+  (:darwin "libmecab.dylib")
+  (:windows "libmecab.dll"))
 
 (use-foreign-library libmecab)
 
