@@ -10,7 +10,7 @@
 
 (in-package #:mecab.low-level)
 
-(defctype size_t :uint)
+(defctype size_t :uint) ;; 32-bit only
 
 (define-foreign-library libmecab
   (:unix "libmecab.so")
@@ -55,16 +55,16 @@
 + mecab_new
 + mecab_new2
 + mecab_version
-- mecab_strerror
++ mecab_strerror
 + mecab_destroy
-- mecab_get_partial
-- mecab_set_partial
-- mecab_get_theta
-- mecab_set_theta
-- mecab_get_lattice_level
-- mecab_set_lattice_level
-- mecab_get_all_morphs
-- mecab_set_all_morphs
++ mecab_get_partial
++ mecab_set_partial
++ mecab_get_theta
++ mecab_set_theta
++ mecab_get_lattice_level
++ mecab_set_lattice_level
++ mecab_get_all_morphs
++ mecab_set_all_morphs
 - mecab_parse_lattice
 + mecab_sparse_tostr
 - mecab_sparse_tostr2
@@ -146,8 +146,40 @@ int           mecab_test_gen(int argc, char **argv);
 
 (defcfun ("mecab_version" %mecab_version) :string)
 
+(defcfun ("mecab_strerror" %mecab_strerror) :string
+  (mecab :pointer))
+
 (defcfun ("mecab_destroy" %mecab_destroy) :void
   (mecab :pointer))
+
+(defcfun ("mecab_get_partial" %mecab_get_partial) :int
+  (mecab :pointer))
+
+(defcfun ("mecab_set_partial" %mecab_set_partial) :void
+  (mecab :pointer)
+  (partial :int))
+
+(defcfun ("mecab_get_theta" %mecab_get_theta) :float
+  (mecab :pointer))
+
+(defcfun ("mecab_set_theta" %mecab_set_theta) :void
+  (mecab :pointer)
+  (theta :float))
+
+(defcfun ("mecab_get_lattice_level" %mecab_get_lattice_level) :int
+  (mecab :pointer))
+
+(defcfun ("mecab_set_lattice_level" %mecab_set_lattice_level) :void
+  (mecab :pointer)
+  (level :int))
+
+(defcfun ("mecab_get_all_morphs" %mecab_get_all_morphs) :int
+  (mecab :pointer))
+
+(defcfun ("mecab_set_all_morphs" %mecab_set_all_morphs) :void
+  (mecab :pointer)
+  (all_morphs :int))
+
 
 (defcfun ("mecab_sparse_tostr" %mecab_sparse_tostr) :string
   (mecab :pointer)
