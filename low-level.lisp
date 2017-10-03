@@ -1,12 +1,20 @@
 (defpackage #:mecab.low-level
   (:use #:cl #:cffi)
-  (:export
-   #:%mecab_new
-   #:%mecab_new2
-   #:%mecab_version
-   #:%mecab_destroy
-   #:%mecab_sparse_tostr
-   #:%mecab_nbest_sparse_tostr))
+  (:export #:mecab-new
+           #:mecab-new2
+           #:mecab-version
+           #:mecab-strerror
+           #:mecab-destroy
+           #:mecab-get-partial
+           #:mecab-set-partial
+           #:mecab-get-theta
+           #:mecab-set-theta
+           #:mecab-get-lattice-level
+           #:mecab-set-lattice-level
+           #:mecab-get-all-morphs
+           #:mecab-set-all-morphs
+           #:mecab-sparse-tostr
+           #:mecab-nbest-sparse-tostr))
 
 (in-package #:mecab.low-level)
 
@@ -20,20 +28,20 @@
 (use-foreign-library libmecab)
 
 #|
-- mecab_dictionary_info_t
-- mecab_path_t
-- mecab_node_t
-- enum
++ mecab_dictionary_info_t
++ mecab_path_t
++ mecab_node_t
++ enum
   mecab_nor_node
   mecab_unk_node
   mecab_bos_node
   mecab_eos_node
   mecab_eon_node
-- enum
++ enum
   mecab_sys_dic
   mecab_usr_dic
   mecab_unk_dic
-- enum
++ enum
   mecab_one_best
   mecab_nbest
   mecab_partial
@@ -41,7 +49,7 @@
   mecab_alternative
   mecab_all_morphs
   mecab_allocate_sentence
-- enum
++ enum
   mecab_any_boundary
   mecab_token_boundary
   mecab_inside_token
@@ -137,55 +145,130 @@ int           mecab_system_eval(int argc, char **argv);
 int           mecab_test_gen(int argc, char **argv);
 |#
 
-(defcfun ("mecab_new" %mecab_new) :pointer
+(defctype mecab-dictionary-info-t* :pointer)
+(defcstruct mecab-dictionary-info-t
+  (filename :string)
+  (charset :string)
+  (size :uint)
+  (type :int)
+  (lsize :uint)
+  (rsize :uint)
+  (version :ushort)
+  (next mecab-dictionary-info-t*))
+
+(defcstruct mecab-path-t
+  (rnode mecab-node-t*)
+  (rnext mecab-node-t*)
+  (lnode mecab-node-t*)
+  (lnext mecab-node-t*)
+  (cost :int)
+  (prob :float))
+
+(defctype mecab-node-t* :pointer)
+(defcstruct mecab-node-t
+  (prev mecab-node-t*)
+  (next mecab-node-t*)
+  (enext mecab-node-t*)
+  (bnext mecab-node-t*)
+  (rpath mecab-path-t*)
+  (lpath mecab-path-t*)
+  (surface :string)
+  (feature :string)
+  (id :uint)
+  (length :ushort)
+  (rlength :ushort)
+  (rcAttr :ushort)
+  (lcAttr :ushort)
+  (posid :ushort)
+  (char-type :uchar)
+  (stat :uchar)
+  (isbest :uchar)
+  (alpha :float)
+  (beta :float)
+  (prob :float)
+  (wcost :short)
+  (cost :long))
+
+(defcenum mecab-node-stat
+  mecab-nor-node
+  mecab-unk-node
+  mecab-bos-node
+  mecab-eos-node
+  mecab-eon-node)
+
+(defcenum mecab-dictionary-info-type
+  mecab-sys-dic
+  mecab-usr-dic
+  mecab-unk-dic)
+
+(defcenum mecab-lattice-request-type
+  (mecab_one_best           1)
+  (mecab_nbest              2)
+  (mecab_partial            4)
+  (mecab_marginal_prob      8)
+  (mecab_alternative        16)
+  (mecab_all_morphs         32)
+  (mecab_allocate_sentence  64))
+
+(defcenum mecab-lattice-boundary-constraint-type
+  (mecab_any_boundary   0)
+  (mecab_token_boundary 1)
+  (mecab_inside_token   2))
+
+(defcfun mecab-new :pointer
   (argc :int)
   (argv :string+ptr))
 
-(defcfun ("mecab_new2" %mecab_new2) :pointer
+(defcfun mecab-new2 :pointer
   (arg :string))
 
-(defcfun ("mecab_version" %mecab_version) :string)
+(defcfun mecab-version :string)
 
-(defcfun ("mecab_strerror" %mecab_strerror) :string
+(defcfun mecab-strerror :string
   (mecab :pointer))
 
-(defcfun ("mecab_destroy" %mecab_destroy) :void
+(defcfun mecab-destroy :void
   (mecab :pointer))
 
-(defcfun ("mecab_get_partial" %mecab_get_partial) :int
+(defcfun mecab-get-partial :int
   (mecab :pointer))
 
-(defcfun ("mecab_set_partial" %mecab_set_partial) :void
+(defcfun mecab-set-partial :void
   (mecab :pointer)
   (partial :int))
 
-(defcfun ("mecab_get_theta" %mecab_get_theta) :float
+(defcfun mecab-get-theta :float
   (mecab :pointer))
 
-(defcfun ("mecab_set_theta" %mecab_set_theta) :void
+(defcfun mecab-set-theta :void
   (mecab :pointer)
   (theta :float))
 
-(defcfun ("mecab_get_lattice_level" %mecab_get_lattice_level) :int
+(defcfun mecab-get-lattice-level :int
   (mecab :pointer))
 
-(defcfun ("mecab_set_lattice_level" %mecab_set_lattice_level) :void
+(defcfun mecab-set-lattice-level :void
   (mecab :pointer)
   (level :int))
 
-(defcfun ("mecab_get_all_morphs" %mecab_get_all_morphs) :int
+(defcfun mecab-get-all-morphs :int
   (mecab :pointer))
 
-(defcfun ("mecab_set_all_morphs" %mecab_set_all_morphs) :void
+(defcfun mecab-set-all-morphs :void
   (mecab :pointer)
-  (all_morphs :int))
+  (all-morphs :int))
 
-
-(defcfun ("mecab_sparse_tostr" %mecab_sparse_tostr) :string
+(defcfun mecab-sparse-tostr :string
   (mecab :pointer)
   (str :string))
 
-(defcfun ("mecab_nbest_sparse_tostr" %mecab_nbest_sparse_tostr) :string
+(defcfun mecab-nbest-sparse-tostr :string
   (mecab :pointer)
   (n size_t)
   (str :string))
+
+#|
+(loop :for form :in (uiop:read-file-forms "low-level.lisp")
+      :when (eq (car form) 'defcfun)
+      :collect (cadr form))
+|#

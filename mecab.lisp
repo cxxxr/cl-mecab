@@ -14,12 +14,12 @@
 (defvar *mecab*)
 
 (defun make-mecab (&optional (option ""))
-  (%mecab_new2 option))
+  (mecab-new2 option))
 
 (defmacro with-mecab ((&optional (option "")) &body body)
   `(let ((*mecab* (make-mecab ,option)))
      (unwind-protect (progn ,@body)
-       (%mecab_destroy *mecab*))))
+       (mecab-destroy *mecab*))))
 
 (defun %split-output (input-stream)
   (loop :for line := (read-line input-stream nil)
@@ -38,7 +38,7 @@
     (loop :repeat n :collect (%split-output input-stream))))
 
 (defun parse (text)
-  (split-output (%mecab_sparse_tostr *mecab* text)))
+  (split-output (mecab-sparse-tostr *mecab* text)))
 
 (defun parse-nbest (n text)
-  (split-output-n n (%mecab_nbest_sparse_tostr *mecab* n text)))
+  (split-output-n n (mecab-nbest-sparse-tostr *mecab* n text)))
