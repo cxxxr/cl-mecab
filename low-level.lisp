@@ -73,7 +73,7 @@
 + mecab_set_lattice_level
 + mecab_get_all_morphs
 + mecab_set_all_morphs
-- mecab_parse_lattice
++ mecab_parse_lattice
 + mecab_sparse_tostr
 - mecab_sparse_tostr2
 - mecab_sparse_tostr3
@@ -82,9 +82,9 @@
 + mecab_nbest_sparse_tostr
 - mecab_nbest_sparse_tostr2
 - mecab_nbest_sparse_tostr3
-- mecab_nbest_init
-- mecab_nbest_init2
-- mecab_nbest_next_tostr
++ mecab_nbest_init
++ mecab_nbest_init2
++ mecab_nbest_next_tostr
 - mecab_nbest_next_tostr2
 - mecab_nbest_next_tonode
 - mecab_format_node
@@ -267,6 +267,10 @@ int           mecab_test_gen(int argc, char **argv);
   (mecab mecab-t*)
   (all-morphs :int))
 
+(defcfun mecab-parse-lattice :int
+  (mecab mecab-t*)
+  (lattice mecab-lattice-t*))
+
 (defcfun mecab-sparse-tostr :string
   (mecab mecab-t*)
   (str :string))
@@ -275,6 +279,18 @@ int           mecab_test_gen(int argc, char **argv);
   (mecab mecab-t*)
   (n size_t)
   (str :string))
+
+(defcfun mecab-nbest-init :int
+  (mecab mecab-t*)
+  (str :string))
+
+(defcfun mecab-nbest-init2 :int
+  (mecab mecab-t*)
+  (str :string)
+  (len size_t))
+
+(defcfun mecab-nbest-next-tostr :string
+  (mecab mecab-t*))
 
 #|
 (loop :for form :in (uiop:read-file-forms "low-level.lisp")
