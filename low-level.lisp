@@ -53,12 +53,12 @@
   mecab_any_boundary
   mecab_token_boundary
   mecab_inside_token
-- mecab_t
-- mecab_model_t
-- mecab_lattice_t
-- mecab_dictionary_info_t
-- mecab_node_t
-- mecab_path_t
++ mecab_t
++ mecab_model_t
++ mecab_lattice_t
++ mecab_dictionary_info_t
++ mecab_node_t
++ mecab_path_t
 
 + mecab_new
 + mecab_new2
@@ -216,6 +216,12 @@ int           mecab_test_gen(int argc, char **argv);
   (mecab_any_boundary   0)
   (mecab_token_boundary 1)
   (mecab_inside_token   2))
+(defctype mecab-t* :pointer)
+(defctype mecab-model-t* :pointer)
+(defctype mecab-lattice-t* :pointer)
+(defctype mecab-dictionary-info-t* :pointer)
+(defctype mecab-node-t* :pointer)
+(defctype mecab-path-t* :pointer)
 
 (defcfun mecab-new :pointer
   (argc :int)
