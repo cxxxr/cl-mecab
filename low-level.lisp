@@ -146,6 +146,9 @@ int           mecab_test_gen(int argc, char **argv);
 |#
 
 (defctype mecab-dictionary-info-t* :pointer)
+(defctype mecab-path-t* :pointer)
+(defctype mecab-node-t* :pointer)
+
 (defcstruct mecab-dictionary-info-t
   (filename :string)
   (charset :string)
@@ -164,7 +167,6 @@ int           mecab_test_gen(int argc, char **argv);
   (cost :int)
   (prob :float))
 
-(defctype mecab-node-t* :pointer)
 (defcstruct mecab-node-t
   (prev mecab-node-t*)
   (next mecab-node-t*)
