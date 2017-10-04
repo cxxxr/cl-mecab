@@ -224,55 +224,55 @@ int           mecab_test_gen(int argc, char **argv);
 (defctype mecab-node-t* :pointer)
 (defctype mecab-path-t* :pointer)
 
-(defcfun mecab-new :pointer
+(defcfun mecab-new mecab-t*
   (argc :int)
   (argv :string+ptr))
 
-(defcfun mecab-new2 :pointer
+(defcfun mecab-new2 mecab-t*
   (arg :string))
 
 (defcfun mecab-version :string)
 
 (defcfun mecab-strerror :string
-  (mecab :pointer))
+  (mecab mecab-t*))
 
 (defcfun mecab-destroy :void
-  (mecab :pointer))
+  (mecab mecab-t*))
 
 (defcfun mecab-get-partial :int
-  (mecab :pointer))
+  (mecab mecab-t*))
 
 (defcfun mecab-set-partial :void
-  (mecab :pointer)
+  (mecab mecab-t*)
   (partial :int))
 
 (defcfun mecab-get-theta :float
-  (mecab :pointer))
+  (mecab mecab-t*))
 
 (defcfun mecab-set-theta :void
-  (mecab :pointer)
+  (mecab mecab-t*)
   (theta :float))
 
 (defcfun mecab-get-lattice-level :int
-  (mecab :pointer))
+  (mecab mecab-t*))
 
 (defcfun mecab-set-lattice-level :void
-  (mecab :pointer)
+  (mecab mecab-t*)
   (level :int))
 
 (defcfun mecab-get-all-morphs :int
-  (mecab :pointer))
+  (mecab mecab-t*))
 
 (defcfun mecab-set-all-morphs :void
-  (mecab :pointer)
+  (mecab mecab-t*)
   (all-morphs :int))
 
 (defcfun mecab-sparse-tostr :string
-  (mecab :pointer)
+  (mecab mecab-t*)
   (str :string))
 
 (defcfun mecab-nbest-sparse-tostr :string
-  (mecab :pointer)
+  (mecab mecab-t*)
   (n size_t)
   (str :string))
 
