@@ -204,18 +204,19 @@ int           mecab_test_gen(int argc, char **argv);
   mecab-unk-dic)
 
 (defcenum mecab-lattice-request-type
-  (mecab_one_best           1)
-  (mecab_nbest              2)
-  (mecab_partial            4)
-  (mecab_marginal_prob      8)
-  (mecab_alternative        16)
-  (mecab_all_morphs         32)
-  (mecab_allocate_sentence  64))
+  (mecab-one-best           1)
+  (mecab-nbest              2)
+  (mecab-partial            4)
+  (mecab-marginal-prob      8)
+  (mecab-alternative        16)
+  (mecab-all-morphs         32)
+  (mecab-allocate-sentence  64))
 
 (defcenum mecab-lattice-boundary-constraint-type
-  (mecab_any_boundary   0)
-  (mecab_token_boundary 1)
-  (mecab_inside_token   2))
+  (mecab-any-boundary   0)
+  (mecab-token-boundary 1)
+  (mecab-inside-token   2))
+
 (defctype mecab-t* :pointer)
 (defctype mecab-model-t* :pointer)
 (defctype mecab-lattice-t* :pointer)
