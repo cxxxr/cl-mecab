@@ -87,14 +87,14 @@
 + mecab_nbest_next_tostr
 - mecab_nbest_next_tostr2
 - mecab_nbest_next_tonode
-- mecab_format_node
-- mecab_dictionary_info
-- mecab_lattice_new
-- mecab_lattice_destroy
-- mecab_lattice_clear
-- mecab_lattice_is_available
-- mecab_lattice_get_bos_node
-- mecab_lattice_get_eos_node
++ mecab_format_node
++ mecab_dictionary_info
++ mecab_lattice_new
++ mecab_lattice_destroy
++ mecab_lattice_clear
++ mecab_lattice_is_available
++ mecab_lattice_get_bos_node
++ mecab_lattice_get_eos_node
 - mecab_lattice_get_all_begin_nodes
 - mecab_lattice_get_all_end_nodes
 - mecab_lattice_get_begin_nodes
@@ -291,6 +291,30 @@ int           mecab_test_gen(int argc, char **argv);
 
 (defcfun mecab-nbest-next-tostr :string
   (mecab mecab-t*))
+
+(defcfun mecab-format-node :string
+  (mecab mecab-t*)
+  (node mecab-node-t*))
+
+(defcfun mecab-dictionary-info mecab-dictionary-info-t*
+  (mecab mecab-t*))
+
+(defcfun mecab-lattice-new mecab-lattice-t*)
+
+(defcfun mecab-lattice-destroy :void
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-clear :void
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-is-available :int
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-get-bos-node mecab-node-t*
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-get-eos-node mecab-node-t*
+  (lattice mecab-lattice-t*))
 
 #|
 (loop :for form :in (uiop:read-file-forms "low-level.lisp")
