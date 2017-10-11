@@ -86,7 +86,7 @@
 + mecab_nbest_init2
 + mecab_nbest_next_tostr
 - mecab_nbest_next_tostr2
-- mecab_nbest_next_tonode
++ mecab_nbest_next_tonode
 + mecab_format_node
 + mecab_dictionary_info
 + mecab_lattice_new
@@ -95,8 +95,8 @@
 + mecab_lattice_is_available
 + mecab_lattice_get_bos_node
 + mecab_lattice_get_eos_node
-- mecab_lattice_get_all_begin_nodes
-- mecab_lattice_get_all_end_nodes
++ mecab_lattice_get_all_begin_nodes
++ mecab_lattice_get_all_end_nodes
 - mecab_lattice_get_begin_nodes
 - mecab_lattice_get_end_nodes
 - mecab_lattice_get_sentence
@@ -148,6 +148,7 @@ int           mecab_test_gen(int argc, char **argv);
 (defctype mecab-dictionary-info-t* :pointer)
 (defctype mecab-path-t* :pointer)
 (defctype mecab-node-t* :pointer)
+(defctype mecab-node-t** :pointer)
 
 (defcstruct mecab-dictionary-info-t
   (filename :string)
@@ -292,6 +293,9 @@ int           mecab_test_gen(int argc, char **argv);
 (defcfun mecab-nbest-next-tostr :string
   (mecab mecab-t*))
 
+(defcfun mecab-nbest-next-tonode mecab-node-t*
+  (mecab mecab-t*))
+
 (defcfun mecab-format-node :string
   (mecab mecab-t*)
   (node mecab-node-t*))
@@ -314,6 +318,12 @@ int           mecab_test_gen(int argc, char **argv);
   (lattice mecab-lattice-t*))
 
 (defcfun mecab-lattice-get-eos-node mecab-node-t*
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-get-all-begin-nodes mecab-node-t**
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-get-all-end-nodes mecab-node-t**
   (lattice mecab-lattice-t*))
 
 #|
