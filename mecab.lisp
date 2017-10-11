@@ -25,7 +25,7 @@
   (loop :for line := (read-line input-stream nil)
         :while line
         :for tabpos := (position #\Tab line)
-        :while Tabpos
+        :while tabpos
         :collect (cons (subseq line 0 tabpos)
                        (split-string #\, line :start (1+ tabpos)))))
 
