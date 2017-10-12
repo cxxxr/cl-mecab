@@ -28,115 +28,6 @@
 (use-foreign-library libmecab)
 
 #|
-+ mecab_dictionary_info_t
-+ mecab_path_t
-+ mecab_node_t
-+ enum
-  mecab_nor_node
-  mecab_unk_node
-  mecab_bos_node
-  mecab_eos_node
-  mecab_eon_node
-+ enum
-  mecab_sys_dic
-  mecab_usr_dic
-  mecab_unk_dic
-+ enum
-  mecab_one_best
-  mecab_nbest
-  mecab_partial
-  mecab_marginal_prob
-  mecab_alternative
-  mecab_all_morphs
-  mecab_allocate_sentence
-+ enum
-  mecab_any_boundary
-  mecab_token_boundary
-  mecab_inside_token
-+ mecab_t
-+ mecab_model_t
-+ mecab_lattice_t
-+ mecab_dictionary_info_t
-+ mecab_node_t
-+ mecab_path_t
-
-+ mecab_new
-+ mecab_new2
-+ mecab_version
-+ mecab_strerror
-+ mecab_destroy
-+ mecab_get_partial
-+ mecab_set_partial
-+ mecab_get_theta
-+ mecab_set_theta
-+ mecab_get_lattice_level
-+ mecab_set_lattice_level
-+ mecab_get_all_morphs
-+ mecab_set_all_morphs
-+ mecab_parse_lattice
-+ mecab_sparse_tostr
-- mecab_sparse_tostr2
-- mecab_sparse_tostr3
-- mecab_sparse_tonode
-- mecab_sparse_tonode2
-+ mecab_nbest_sparse_tostr
-- mecab_nbest_sparse_tostr2
-- mecab_nbest_sparse_tostr3
-+ mecab_nbest_init
-+ mecab_nbest_init2
-+ mecab_nbest_next_tostr
-- mecab_nbest_next_tostr2
-+ mecab_nbest_next_tonode
-+ mecab_format_node
-+ mecab_dictionary_info
-+ mecab_lattice_new
-+ mecab_lattice_destroy
-+ mecab_lattice_clear
-+ mecab_lattice_is_available
-+ mecab_lattice_get_bos_node
-+ mecab_lattice_get_eos_node
-+ mecab_lattice_get_all_begin_nodes
-+ mecab_lattice_get_all_end_nodes
-- mecab_lattice_get_begin_nodes
-- mecab_lattice_get_end_nodes
-- mecab_lattice_get_sentence
-- mecab_lattice_set_sentence
-- mecab_lattice_set_sentence2
-- mecab_lattice_get_size
-- mecab_lattice_get_z
-- mecab_lattice_set_z
-- mecab_lattice_get_theta
-- mecab_lattice_set_theta
-- mecab_lattice_next
-- mecab_lattice_get_request_type
-- mecab_lattice_has_request_type
-- mecab_lattice_set_request_type
-- mecab_lattice_add_request_type
-- mecab_lattice_remove_request_type
-- mecab_lattice_new_node
-- mecab_lattice_tostr
-- mecab_lattice_tostr2
-- mecab_lattice_nbest_tostr
-- mecab_lattice_nbest_tostr2
-- mecab_lattice_has_constraint
-- mecab_lattice_get_boundary_constraint
-- mecab_lattice_get_feature_constraint
-- mecab_lattice_set_boundary_constraint
-- mecab_lattice_set_feature_constraint
-- mecab_lattice_set_result
-- mecab_lattice_strerror
-- mecab_model_new
-- mecab_model_new2
-- mecab_model_destroy
-- mecab_model_new_tagger
-- mecab_model_new_lattice
-- mecab_model_swap
-- mecab_dictionary_info_t
-- mecab_model_transition_cost
-- mecab_model_lookup
-|#
-
-#|
 int           mecab_do(int argc, char **argv);
 int           mecab_dict_index(int argc, char **argv);
 int           mecab_dict_gen(int argc, char **argv);
@@ -144,6 +35,8 @@ int           mecab_cost_train(int argc, char **argv);
 int           mecab_system_eval(int argc, char **argv);
 int           mecab_test_gen(int argc, char **argv);
 |#
+
+(defctype char* :pointer)
 
 (defctype mecab-dictionary-info-t* :pointer)
 (defctype mecab-path-t* :pointer)
@@ -276,10 +169,28 @@ int           mecab_test_gen(int argc, char **argv);
   (mecab mecab-t*)
   (str :string))
 
+(defcfun mecab-sparse-tostr2 :string
+  (mecab mecab-t*)
+  (str :string)
+  (len size_t))
+
+(defcfun mecab-sparse-tostr3 char*
+  (mecab mecab-t*)
+  (str :string)
+  (len size_t)
+  (ostr char*)
+  (olen size_t))
+
+;(defcfun mecab-sparse-tonode )
+;(defcfun mecab-sparse-tonode2 )
+
 (defcfun mecab-nbest-sparse-tostr :string
   (mecab mecab-t*)
   (n size_t)
   (str :string))
+
+;(defcfun mecab-nbest-sparse-tostr2 )
+;(defcfun mecab-nbest-sparse-tostr3 )
 
 (defcfun mecab-nbest-init :int
   (mecab mecab-t*)
@@ -292,6 +203,8 @@ int           mecab_test_gen(int argc, char **argv);
 
 (defcfun mecab-nbest-next-tostr :string
   (mecab mecab-t*))
+
+;(defcfun mecab-nbest-next-tostr2 )
 
 (defcfun mecab-nbest-next-tonode mecab-node-t*
   (mecab mecab-t*))
@@ -325,6 +238,44 @@ int           mecab_test_gen(int argc, char **argv);
 
 (defcfun mecab-lattice-get-all-end-nodes mecab-node-t**
   (lattice mecab-lattice-t*))
+
+;(defcfun mecab-lattice-get-begin-nodes )
+;(defcfun mecab-lattice-get-end-nodes )
+;(defcfun mecab-lattice-get-sentence )
+;(defcfun mecab-lattice-set-sentence )
+;(defcfun mecab-lattice-set-sentence2 )
+;(defcfun mecab-lattice-get-size )
+;(defcfun mecab-lattice-get-z )
+;(defcfun mecab-lattice-set-z )
+;(defcfun mecab-lattice-get-theta )
+;(defcfun mecab-lattice-set-theta )
+;(defcfun mecab-lattice-next )
+;(defcfun mecab-lattice-get-request-type )
+;(defcfun mecab-lattice-has-request-type )
+;(defcfun mecab-lattice-set-request-type )
+;(defcfun mecab-lattice-add-request-type )
+;(defcfun mecab-lattice-remove-request-type )
+;(defcfun mecab-lattice-new-node )
+;(defcfun mecab-lattice-tostr )
+;(defcfun mecab-lattice-tostr2 )
+;(defcfun mecab-lattice-nbest-tostr )
+;(defcfun mecab-lattice-nbest-tostr2 )
+;(defcfun mecab-lattice-has-constraint )
+;(defcfun mecab-lattice-get-boundary-constraint )
+;(defcfun mecab-lattice-get-feature-constraint )
+;(defcfun mecab-lattice-set-boundary-constraint )
+;(defcfun mecab-lattice-set-feature-constraint )
+;(defcfun mecab-lattice-set-result )
+;(defcfun mecab-lattice-strerror )
+;(defcfun mecab-model-new )
+;(defcfun mecab-model-new2 )
+;(defcfun mecab-model-destroy )
+;(defcfun mecab-model-new-tagger )
+;(defcfun mecab-model-new-lattice )
+;(defcfun mecab-model-swap )
+;(defcfun mecab-dictionary-info-t )
+;(defcfun mecab-model-transition-cost )
+;(defcfun mecab-model-lookup )
 
 #|
 (loop :for form :in (uiop:read-file-forms "low-level.lisp")
