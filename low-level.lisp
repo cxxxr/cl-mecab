@@ -394,14 +394,29 @@
   (end :string)
   (lattice mecab-lattice-t*))
 
-#|
-int           mecab_do(int argc, char **argv);
-int           mecab_dict_index(int argc, char **argv);
-int           mecab_dict_gen(int argc, char **argv);
-int           mecab_cost_train(int argc, char **argv);
-int           mecab_system_eval(int argc, char **argv);
-int           mecab_test_gen(int argc, char **argv);
-|#
+(defcfun mecab-do :int
+  (argc :int)
+  (argv char**))
+
+(defcfun mecab-dict-index :int
+  (argc :int)
+  (argv char**))
+
+(defcfun mecab-dict-gen :int
+  (argc :int)
+  (argv char**))
+
+(defcfun mecab-cost-train :int
+  (argc :int)
+  (argv char**))
+
+(defcfun mecab-system-eval :int
+  (argc :int)
+  (argv char**))
+
+(defcfun mecab-test-gen :int
+  (argc :int)
+  (argv char**))
 
 #|
 (loop :for form :in (uiop:read-file-forms "low-level.lisp")
