@@ -1,20 +1,45 @@
 (defpackage #:mecab.low-level
   (:use #:cl #:cffi)
-  (:export #:mecab-new
-           #:mecab-new2
-           #:mecab-version
-           #:mecab-strerror
-           #:mecab-destroy
-           #:mecab-get-partial
-           #:mecab-set-partial
-           #:mecab-get-theta
-           #:mecab-set-theta
-           #:mecab-get-lattice-level
-           #:mecab-set-lattice-level
-           #:mecab-get-all-morphs
-           #:mecab-set-all-morphs
-           #:mecab-sparse-tostr
-           #:mecab-nbest-sparse-tostr))
+  (:export #:size-t #:char* #:char** #:mecab-dictionary-info-t* #:mecab-path-t*
+           #:mecab-node-t* #:mecab-node-t** #:mecab-dictionary-info-t #:mecab-path-t
+           #:mecab-node-t #:mecab-eon-node #:mecab-eos-node #:mecab-bos-node
+           #:mecab-unk-node #:mecab-nor-node #:mecab-node-stat #:mecab-unk-dic
+           #:mecab-usr-dic #:mecab-sys-dic #:mecab-dictionary-info-type
+           #:mecab-allocate-sentence #:mecab-all-morphs #:mecab-alternative
+           #:mecab-marginal-prob #:mecab-partial #:mecab-nbest #:mecab-one-best
+           #:mecab-lattice-request-type #:mecab-inside-token #:mecab-token-boundary
+           #:mecab-any-boundary #:mecab-lattice-boundary-constraint-type #:mecab-t*
+           #:mecab-model-t* #:mecab-lattice-t* #:mecab-dictionary-info-t* #:mecab-node-t*
+           #:mecab-path-t* #:mecab-new #:mecab-new2 #:mecab-version #:mecab-strerror
+           #:mecab-destroy #:mecab-get-partial #:mecab-set-partial #:mecab-get-theta
+           #:mecab-set-theta #:mecab-get-lattice-level #:mecab-set-lattice-level
+           #:mecab-get-all-morphs #:mecab-set-all-morphs #:mecab-parse-lattice
+           #:mecab-sparse-tostr #:mecab-sparse-tostr2 #:mecab-sparse-tostr3
+           #:mecab-sparse-tonode #:mecab-sparse-tonode2 #:mecab-nbest-sparse-tostr
+           #:mecab-nbest-sparse-tostr2 #:mecab-nbest-sparse-tostr3 #:mecab-nbest-init
+           #:mecab-nbest-init2 #:mecab-nbest-next-tostr #:mecab-nbest-next-tostr2
+           #:mecab-nbest-next-tonode #:mecab-format-node #:mecab-dictionary-info
+           #:mecab-lattice-new #:mecab-lattice-destroy #:mecab-lattice-clear
+           #:mecab-lattice-is-available #:mecab-lattice-get-bos-node
+           #:mecab-lattice-get-eos-node #:mecab-lattice-get-all-begin-nodes
+           #:mecab-lattice-get-all-end-nodes #:mecab-lattice-get-begin-nodes
+           #:mecab-lattice-get-end-nodes #:mecab-lattice-get-sentence
+           #:mecab-lattice-set-sentence #:mecab-lattice-set-sentence2
+           #:mecab-lattice-get-size #:mecab-lattice-get-z #:mecab-lattice-set-z
+           #:mecab-lattice-get-theta #:mecab-lattice-set-theta #:mecab-lattice-next
+           #:mecab-lattice-get-request-type #:mecab-lattice-has-request-type
+           #:mecab-lattice-set-request-type #:mecab-lattice-add-request-type
+           #:mecab-lattice-remove-request-type #:mecab-lattice-new-node
+           #:mecab-lattice-tostr #:mecab-lattice-tostr2 #:mecab-lattice-nbest-tostr
+           #:mecab-lattice-nbest-tostr2 #:mecab-lattice-has-constraint
+           #:mecab-lattice-get-boundary-constraint #:mecab-lattice-get-feature-constraint
+           #:mecab-lattice-set-boundary-constraint #:mecab-lattice-set-feature-constraint
+           #:mecab-lattice-set-result #:mecab-lattice-strerror #:mecab-model-new
+           #:mecab-model-new2 #:mecab-model-destroy #:mecab-model-new-tagger
+           #:mecab-model-new-lattice #:mecab-model-swap #:mecab-model-dictionary-info
+           #:mecab-model-transition-cost #:mecab-model-lookup #:mecab-do
+           #:mecab-dict-index #:mecab-dict-gen #:mecab-cost-train #:mecab-system-eval
+           #:mecab-test-gen))
 
 (in-package #:mecab.low-level)
 
@@ -417,9 +442,3 @@
 (defcfun mecab-test-gen :int
   (argc :int)
   (argv char**))
-
-#|
-(loop :for form :in (uiop:read-file-forms "low-level.lisp")
-      :when (eq (car form) 'defcfun)
-      :collect (cadr form))
-|#
