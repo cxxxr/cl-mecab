@@ -18,7 +18,7 @@
 
 (in-package #:mecab.low-level)
 
-(defctype size_t :uint) ;; 32-bit only
+(defctype size-t :uint) ;; 32-bit only
 
 (define-foreign-library libmecab
   (:unix "libmecab.so")
@@ -164,14 +164,14 @@
 (defcfun mecab-sparse-tostr2 :string
   (mecab mecab-t*)
   (str :string)
-  (len size_t))
+  (len size-t))
 
 (defcfun mecab-sparse-tostr3 char*
   (mecab mecab-t*)
   (str :string)
-  (len size_t)
+  (len size-t)
   (ostr char*)
-  (olen size_t))
+  (olen size-t))
 
 (defcfun mecab-sparse-tonode mecab-node-t*
   (mecab mecab-t*)
@@ -180,26 +180,26 @@
 (defcfun mecab-sparse-tonode2 mecab-node-t*
   (mecab mecab-t*)
   (str :string)
-  (len size_t))
+  (len size-t))
 
 (defcfun mecab-nbest-sparse-tostr :string
   (mecab mecab-t*)
-  (n size_t)
+  (n size-t)
   (str :string))
 
 (defcfun mecab-nbest-sparse-tostr2 :string
   (mecab mecab-t*)
-  (n size_t)
+  (n size-t)
   (str :string)
-  (len size_t))
+  (len size-t))
 
 (defcfun mecab-nbest-sparse-tostr3 char*
   (mecab mecab-t*)
-  (n size_t)
+  (n size-t)
   (str :string)
-  (len size_t)
+  (len size-t)
   (ostr char*)
-  (olen size_t))
+  (olen size-t))
 
 (defcfun mecab-nbest-init :int
   (mecab mecab-t*)
@@ -208,7 +208,7 @@
 (defcfun mecab-nbest-init2 :int
   (mecab mecab-t*)
   (str :string)
-  (len size_t))
+  (len size-t))
 
 (defcfun mecab-nbest-next-tostr :string
   (mecab mecab-t*))
@@ -216,7 +216,7 @@
 (defcfun mecab-nbest-next-tostr2 char*
   (mecab mecab-t*)
   (ostr char*)
-  (olen size_t))
+  (olen size-t))
 
 (defcfun mecab-nbest-next-tonode mecab-node-t*
   (mecab mecab-t*))
@@ -253,11 +253,11 @@
 
 (defcfun mecab-lattice-get-begin-nodes mecab-node-t*
   (lattice mecab-lattice-t*)
-  (pos size_t))
+  (pos size-t))
 
 (defcfun mecab-lattice-get-end-nodes mecab-node-t*
   (lattice mecab-lattice-t*)
-  (pos size_t))
+  (pos size-t))
 
 (defcfun mecab-lattice-get-sentence :string
   (lattice mecab-lattice-t*))
@@ -269,9 +269,9 @@
 (defcfun mecab-lattice-set-sentence2 :void
   (lattice mecab-lattice-t*)
   (sentence :string)
-  (len size_t))
+  (len size-t))
 
-(defcfun mecab-lattice-get-size size_t
+(defcfun mecab-lattice-get-size size-t
   (lattice mecab-lattice-t*))
 
 (defcfun mecab-lattice-get-z :double
@@ -319,38 +319,38 @@
 
 (defcfun mecab-lattice-tostr2 :string
   (lattice mecab-lattice-t*)
-  (n size_t))
+  (n size-t))
 
 (defcfun mecab-lattice-nbest-tostr :string
   (lattice mecab-lattice-t*)
-  (n size_t))
+  (n size-t))
 
 (defcfun mecab-lattice-nbest-tostr2 :string
   (lattice mecab-lattice-t*)
-  (n size_t)
+  (n size-t)
   (buf char*)
-  (size size_t))
+  (size size-t))
 
 (defcfun mecab-lattice-has-constraint :int
   (lattice mecab-lattice-t*))
 
 (defcfun mecab-lattice-get-boundary-constraint :int
   (lattice mecab-lattice-t*)
-  (pos size_t))
+  (pos size-t))
 
 (defcfun mecab-lattice-get-feature-constraint :string
   (lattice mecab-lattice-t*)
-  (pos size_t))
+  (pos size-t))
 
 (defcfun mecab-lattice-set-boundary-constraint :void
   (lattice mecab-lattice-t*)
-  (pos size_t)
+  (pos size-t)
   (boundary-type :int))
 
 (defcfun mecab-lattice-set-feature-constraint :void
   (lattice mecab-lattice-t*)
-  (begin-pos size_t)
-  (end-pos size_t)
+  (begin-pos size-t)
+  (end-pos size-t)
   (feature :string))
 
 (defcfun mecab-lattice-set-result :void
