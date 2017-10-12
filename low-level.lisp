@@ -27,16 +27,8 @@
 
 (use-foreign-library libmecab)
 
-#|
-int           mecab_do(int argc, char **argv);
-int           mecab_dict_index(int argc, char **argv);
-int           mecab_dict_gen(int argc, char **argv);
-int           mecab_cost_train(int argc, char **argv);
-int           mecab_system_eval(int argc, char **argv);
-int           mecab_test_gen(int argc, char **argv);
-|#
-
 (defctype char* :pointer)
+(defctype char** :pointer)
 
 (defctype mecab-dictionary-info-t* :pointer)
 (defctype mecab-path-t* :pointer)
@@ -181,16 +173,33 @@ int           mecab_test_gen(int argc, char **argv);
   (ostr char*)
   (olen size_t))
 
-;(defcfun mecab-sparse-tonode )
-;(defcfun mecab-sparse-tonode2 )
+(defcfun mecab-sparse-tonode mecab-node-t*
+  (mecab mecab-t*)
+  (str :string))
+
+(defcfun mecab-sparse-tonode2 mecab-node-t*
+  (mecab mecab-t*)
+  (str :string)
+  (len size_t))
 
 (defcfun mecab-nbest-sparse-tostr :string
   (mecab mecab-t*)
   (n size_t)
   (str :string))
 
-;(defcfun mecab-nbest-sparse-tostr2 )
-;(defcfun mecab-nbest-sparse-tostr3 )
+(defcfun mecab-nbest-sparse-tostr2 :string
+  (mecab mecab-t*)
+  (n size_t)
+  (str :string)
+  (len size_t))
+
+(defcfun mecab-nbest-sparse-tostr3 char*
+  (mecab mecab-t*)
+  (n size_t)
+  (str :string)
+  (len size_t)
+  (ostr char*)
+  (olen size_t))
 
 (defcfun mecab-nbest-init :int
   (mecab mecab-t*)
@@ -204,7 +213,10 @@ int           mecab_test_gen(int argc, char **argv);
 (defcfun mecab-nbest-next-tostr :string
   (mecab mecab-t*))
 
-;(defcfun mecab-nbest-next-tostr2 )
+(defcfun mecab-nbest-next-tostr2 char*
+  (mecab mecab-t*)
+  (ostr char*)
+  (olen size_t))
 
 (defcfun mecab-nbest-next-tonode mecab-node-t*
   (mecab mecab-t*))
@@ -239,43 +251,157 @@ int           mecab_test_gen(int argc, char **argv);
 (defcfun mecab-lattice-get-all-end-nodes mecab-node-t**
   (lattice mecab-lattice-t*))
 
-;(defcfun mecab-lattice-get-begin-nodes )
-;(defcfun mecab-lattice-get-end-nodes )
-;(defcfun mecab-lattice-get-sentence )
-;(defcfun mecab-lattice-set-sentence )
-;(defcfun mecab-lattice-set-sentence2 )
-;(defcfun mecab-lattice-get-size )
-;(defcfun mecab-lattice-get-z )
-;(defcfun mecab-lattice-set-z )
-;(defcfun mecab-lattice-get-theta )
-;(defcfun mecab-lattice-set-theta )
-;(defcfun mecab-lattice-next )
-;(defcfun mecab-lattice-get-request-type )
-;(defcfun mecab-lattice-has-request-type )
-;(defcfun mecab-lattice-set-request-type )
-;(defcfun mecab-lattice-add-request-type )
-;(defcfun mecab-lattice-remove-request-type )
-;(defcfun mecab-lattice-new-node )
-;(defcfun mecab-lattice-tostr )
-;(defcfun mecab-lattice-tostr2 )
-;(defcfun mecab-lattice-nbest-tostr )
-;(defcfun mecab-lattice-nbest-tostr2 )
-;(defcfun mecab-lattice-has-constraint )
-;(defcfun mecab-lattice-get-boundary-constraint )
-;(defcfun mecab-lattice-get-feature-constraint )
-;(defcfun mecab-lattice-set-boundary-constraint )
-;(defcfun mecab-lattice-set-feature-constraint )
-;(defcfun mecab-lattice-set-result )
-;(defcfun mecab-lattice-strerror )
-;(defcfun mecab-model-new )
-;(defcfun mecab-model-new2 )
-;(defcfun mecab-model-destroy )
-;(defcfun mecab-model-new-tagger )
-;(defcfun mecab-model-new-lattice )
-;(defcfun mecab-model-swap )
-;(defcfun mecab-dictionary-info-t )
-;(defcfun mecab-model-transition-cost )
-;(defcfun mecab-model-lookup )
+(defcfun mecab-lattice-get-begin-nodes mecab-node-t*
+  (lattice mecab-lattice-t*)
+  (pos size_t))
+
+(defcfun mecab-lattice-get-end-nodes mecab-node-t*
+  (lattice mecab-lattice-t*)
+  (pos size_t))
+
+(defcfun mecab-lattice-get-sentence :string
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-set-sentence :void
+  (lattice mecab-lattice-t*)
+  (sentence :string))
+
+(defcfun mecab-lattice-set-sentence2 :void
+  (lattice mecab-lattice-t*)
+  (sentence :string)
+  (len size_t))
+
+(defcfun mecab-lattice-get-size size_t
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-get-z :double
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-set-z :void
+  (lattice mecab-lattice-t*)
+  (z :double))
+
+(defcfun mecab-lattice-get-theta :double
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-set-theta :void
+  (lattice mecab-lattice-t*)
+  (theta :double))
+
+(defcfun mecab-lattice-next :int
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-get-request-type :int
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-has-request-type :int
+  (lattice mecab-lattice-t*)
+  (request-type :int))
+
+(defcfun mecab-lattice-set-request-type :void
+  (lattice mecab-lattice-t*)
+  (request-type :int))
+
+(defcfun mecab-lattice-add-request-type :void
+  (lattice mecab-lattice-t*)
+  (request-type :int))
+
+(defcfun mecab-lattice-remove-request-type :void
+  (lattice mecab-lattice-t*)
+  (request-type :int))
+
+(defcfun mecab-lattice-new-node :void
+  (lattice mecab-lattice-t*)
+  (request-type :int))
+
+(defcfun mecab-lattice-tostr :string
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-tostr2 :string
+  (lattice mecab-lattice-t*)
+  (n size_t))
+
+(defcfun mecab-lattice-nbest-tostr :string
+  (lattice mecab-lattice-t*)
+  (n size_t))
+
+(defcfun mecab-lattice-nbest-tostr2 :string
+  (lattice mecab-lattice-t*)
+  (n size_t)
+  (buf char*)
+  (size size_t))
+
+(defcfun mecab-lattice-has-constraint :int
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-lattice-get-boundary-constraint :int
+  (lattice mecab-lattice-t*)
+  (pos size_t))
+
+(defcfun mecab-lattice-get-feature-constraint :string
+  (lattice mecab-lattice-t*)
+  (pos size_t))
+
+(defcfun mecab-lattice-set-boundary-constraint :void
+  (lattice mecab-lattice-t*)
+  (pos size_t)
+  (boundary-type :int))
+
+(defcfun mecab-lattice-set-feature-constraint :void
+  (lattice mecab-lattice-t*)
+  (begin-pos size_t)
+  (end-pos size_t)
+  (feature :string))
+
+(defcfun mecab-lattice-set-result :void
+  (lattice mecab-lattice-t*)
+  (result :string))
+
+(defcfun mecab-lattice-strerror :string
+  (lattice mecab-lattice-t*))
+
+(defcfun mecab-model-new mecab-model-t*
+  (argc :int)
+  (argv char**))
+
+(defcfun mecab-model-new2 mecab-model-t*
+  (arg :string))
+
+(defcfun mecab-model-destroy :void
+  (model mecab-model-t*))
+
+(defcfun mecab-model-new-tagger mecab-t*
+  (model mecab-model-t*))
+
+(defcfun mecab-model-new-lattice mecab-lattice-t*
+  (model mecab-model-t*))
+
+(defcfun mecab-model-swap :int
+  (model mecab-model-t*)
+  (new-model mecab-model-t*))
+
+(defcfun mecab-model-dictionary-info mecab-dictionary-info-t* 
+  (model mecab-model-t*))
+
+(defcfun mecab-model-transition-cost :int
+  (model mecab-model-t*)
+  (rcAttr :ushort)
+  (lcAttr :ushort))
+
+(defcfun mecab-model-lookup mecab-node-t*
+  (model mecab-model-t*)
+  (begin :string)
+  (end :string)
+  (lattice mecab-lattice-t*))
+
+#|
+int           mecab_do(int argc, char **argv);
+int           mecab_dict_index(int argc, char **argv);
+int           mecab_dict_gen(int argc, char **argv);
+int           mecab_cost_train(int argc, char **argv);
+int           mecab_system_eval(int argc, char **argv);
+int           mecab_test_gen(int argc, char **argv);
+|#
 
 #|
 (loop :for form :in (uiop:read-file-forms "low-level.lisp")
