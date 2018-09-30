@@ -45,13 +45,12 @@
 
 (defctype size-t :uint) ;; 32-bit only
 
-#+(and windows lispworks)
-(load-foreign-library (asdf:system-relative-pathname :mecab "./windows/libmecab64.dll"))
-
 (define-foreign-library libmecab
   (:unix "libmecab.so")
   (:darwin "libmecab.dylib")
-  (:windows "libmecab.dll"))
+  (:windows
+   #+lispworks #.(asdf:system-relative-pathname :mecab "./windows/libmecab64.dll")
+   #-lispworks "libmecab.dll"))
 
 (use-foreign-library libmecab)
 
